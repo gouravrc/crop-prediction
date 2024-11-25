@@ -4,7 +4,6 @@ import numpy as np
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
 class SoilConditions(BaseModel):
     N: int
     P: int
@@ -26,13 +25,11 @@ app.add_middleware(
 
 @app.get("/predict-crop/")
 async def predict_crop(data: SoilConditions):
-    with open('cp_model.pkl', 'rb') as f:
+    with open("./cp_model_0.0.1.pkl", 'rb') as f:
         try:
             model = pickle.load(f)
             arr = np.array([[data.N,data.P, data.K, data.temperature, data.humidity, data.ph, data.rainfall]])
             prediction = model.predict(arr)
-            print(prediction[0])
-            print(returnLabeledCropData(prediction[0]))
             return {"prediction":returnLabeledCropData(prediction[0])}
         except:
             return {"error":"Something error occured"}
@@ -40,7 +37,7 @@ async def predict_crop(data: SoilConditions):
 
 def returnLabeledCropData(value: float):
     data = int(value)
-    match data:
+    match (data):
         case 1:
             return "rice"
         case 2:

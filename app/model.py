@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import pickle
+__version__ = "0.0.1"
 
 df = pd.read_csv("Crop_recommendation.csv")
 # dropping out 'label' column
@@ -76,5 +77,5 @@ print(forest.score(X_test, y_test))
 # prediction = forest.predict(new_data)
 # print(prediction)
 
-with open('cp_model.pkl', 'wb') as f:
+with open(f"cp_model_{__version__}.pkl", 'wb') as f:
   pickle.dump(forest, f)
